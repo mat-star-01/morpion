@@ -47,6 +47,12 @@ class Morpion:
     def lui_dire_bravo(self):
         print("bravo")
 
+    def verifier_si_la_grille_est_pleine(self):
+        return False
+
+    def personne_a_gagne(self):
+        pass
+
     def jouer(self):
         while True:
             self.afficher_la_grille()
@@ -58,6 +64,11 @@ class Morpion:
             if il_a_gagne:
                 self.lui_dire_bravo()
                 break
+            else:
+                la_grille_est_pleine = self.verifier_si_la_grille_est_pleine()
+
+                if la_grille_est_pleine:
+                    self.personne_a_gagne()
 
 
 morpion = Morpion()
