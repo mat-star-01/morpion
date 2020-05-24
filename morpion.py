@@ -16,19 +16,21 @@ class Morpion:
         }
 
     def afficher_la_grille(self):
-        print(" ".join(self.grille[0]))
-        print(" ".join(self.grille[1]))
-        print(" ".join(self.grille[2]))
+        for index_de_ligne in range(3):
+            print(" ".join(self.grille[index_de_ligne]))
+
 
     def demander_au_joueur_ce_qu_il_veut_jouer(self):
-        self.user_input = int(input("Qu'est ce que tu veux jouer ?\n"))
-        # TODO: Verifier que self.user_input est valide.
-        #   ex invalide: 10
-        #   ex invalide: 0
-        #   ex invalide: -1
-        #   ex invalide: y
-        #   ex invalide: 102
-        #   ex invalide: 1000564
+        entree_valide = False
+        while not entree_valide:
+            try:
+                self.user_input = int(input("Qu'est ce que tu veux jouer ?\n"))  # Le user joue.
+            except ValueError:  # Si le user entre quelque chose qui n'est pas un nombre:
+                self.user_input = 0  # On entre 0, qui ne peut pas entrer dans la grille.
+            if self.user_input in self.grille_dict:  # Si le user met un nombre qui peut entrer dans la grille:
+                entree_valide = True  # On se souvient que sont entree est valide.
+            else:  # Au contraire, si son entree n'est pas valide:
+                print("Desole je ne peux pas accepter cette entree.")  # On lui dit que son entree n'est pas valide.
 
     def mettre_des_lettres_sur_la_case(self):
         coord = self.grille_dict[self.user_input]
@@ -40,7 +42,7 @@ class Morpion:
         else:  # if self.tour_du_joueur == "O":
             self.tour_du_joueur = "X"
 
-    def verifier_si_il_a_gagne(self):
+    def verifier_si_un_joueur_a_gagne(self):
         return False
         # TODO: a faire.
 
@@ -48,10 +50,13 @@ class Morpion:
         print("bravo")
 
     def verifier_si_la_grille_est_pleine(self):
-        return False
+        for index_de_ligne in range(3):
+            if "." in self.grille[index_de_ligne]:
+                return False
+        return True
 
-    def personne_a_gagne(self):
-        pass
+    def personne_n_a_gagne(self):
+        print("La grille est pleine donc personne n'a gagne. ")
 
     def jouer(self):
         while True:
@@ -59,7 +64,7 @@ class Morpion:
             self.demander_au_joueur_ce_qu_il_veut_jouer()
             self.mettre_des_lettres_sur_la_case()
             self.changer_de_joueur()
-            il_a_gagne = self.verifier_si_il_a_gagne()
+            il_a_gagne = self.verifier_si_un_joueur_a_gagne()
 
             if il_a_gagne:
                 self.lui_dire_bravo()
@@ -68,7 +73,9 @@ class Morpion:
                 la_grille_est_pleine = self.verifier_si_la_grille_est_pleine()
 
                 if la_grille_est_pleine:
-                    self.personne_a_gagne()
+                    self.afficher_la_grille()
+                    self.personne_n_a_gagne()
+                    break
 
 
 morpion = Morpion()
