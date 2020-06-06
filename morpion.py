@@ -43,11 +43,22 @@ class Morpion:
             self.tour_du_joueur = "X"
 
     def verifier_si_un_joueur_a_gagne(self):
-        return False
-        # TODO: a faire.
+        colonne_gagnee = []
+        for colonne_index in range(3):
+            colonne_gagnee.append(self.grille[0][colonne_index] == self.grille[1][colonne_index] == self.grille[2][colonne_index] != ".")
+
+        ligne_gagnee = []
+        for ligne_index in range(3):
+            ligne_gagnee.append(self.grille[ligne_index][0] == self.grille[ligne_index][1] == self.grille[ligne_index][2] != ".")
+
+        diagonale_gagnee = []
+        ligne_gagnee.append(self.grille[0][0] == self.grille[1][1] == self.grille[2][2] != ".")
+        ligne_gagnee.append(self.grille[2][0] == self.grille[1][1] == self.grille[0][2] != ".")
+
+        return any(colonne_gagnee) or any(ligne_gagnee) or any(diagonale_gagnee)
 
     def lui_dire_bravo(self):
-        print("bravo")
+        print(f"Bravo au joueur {self.tour_du_joueur} ! Tu as gagne.")
 
     def verifier_si_la_grille_est_pleine(self):
         for index_de_ligne in range(3):
@@ -63,10 +74,10 @@ class Morpion:
             self.afficher_la_grille()
             self.demander_au_joueur_ce_qu_il_veut_jouer()
             self.mettre_des_lettres_sur_la_case()
-            self.changer_de_joueur()
             il_a_gagne = self.verifier_si_un_joueur_a_gagne()
 
             if il_a_gagne:
+                self.afficher_la_grille()
                 self.lui_dire_bravo()
                 break
             else:
@@ -76,6 +87,7 @@ class Morpion:
                     self.afficher_la_grille()
                     self.personne_n_a_gagne()
                     break
+                self.changer_de_joueur()
 
 
 morpion = Morpion()
